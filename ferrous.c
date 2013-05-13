@@ -6,7 +6,7 @@
 
 int yyparse(SExpression **expression, yyscan_t scanner);
 
-SExpression *getAST(const char* expr) {
+SExpression *getAST(void) {
     SExpression *expression;
     yyscan_t scanner;
     YY_BUFFER_STATE state;
@@ -15,8 +15,6 @@ SExpression *getAST(const char* expr) {
         // couldn't initialize
         return NULL;
     }
-
-    state = yy_scan_string(expr, scanner);
 
     if (yyparse(&expression, scanner)) {
         // error parsing
@@ -43,14 +41,13 @@ int evaluate(SExpression *e) {
 
 int main(void) {
     SExpression *e = NULL;
-    char test[]=" 4 + 2*10 + 3*( 5 + 1 )";
     int result = 0;
 
-    e = getAST(test);
+    e = getAST();
 
     result = evaluate(e);
 
-    printf("Result of '%s' is %d\n", test, result);
+    printf("Result is %d\n", result);
 
     deleteExpression(e);
 
