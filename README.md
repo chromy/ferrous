@@ -43,7 +43,7 @@ Apple clang version 4.1 (tags/Apple/clang-421.11.66) (based on LLVM 3.1svn)
 
 Step 0
 ------
-I'm going to start with the rentrent parser [example](http://en.wikipedia.org/wiki/GNU_bison) 
+I'm going to start with the reentrant parser [example](http://en.wikipedia.org/wiki/GNU_bison) 
 from Bison's Wikipedia page, this means we don't have to spend ages 
 working out which flags we need to set to get Bison and Flex to play nice.
 
@@ -56,11 +56,11 @@ We get five files:
 *   expression.h and expression.c
     The file which encodes the AST and an how to evaulate 
 
-By default Bison creates a non-renentrent parser, one which uses gobal 
+By default Bison creates a non-reentrant parser, one which uses global 
 variables to keep state which means you can't have two parsers around at once.
-In our case this wouldn't actually be so bad (we're unlikey to need to compile
-two files simutainously) but it's still nice bacause it keeps everything more 
-contanined.
+In our case this wouldn't actually be so bad (we're unlikely to need to compile
+two files simultaneously) but it's still nice because it keeps everything more 
+contained.
 
 * explain files
 * makefile
@@ -77,4 +77,14 @@ $ ./fe
 Result of ' 4 + 2*10 + 3*( 5 + 1 )' is 42
 ```
 
+Step 1
+------
+
+Removed read from string.
+
+Built in echo seems to do weird things.
+```bash
+$ /bin/echo '1+2*3' | ./fe
+Result is 7
+```
 
