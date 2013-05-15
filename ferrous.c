@@ -3,6 +3,7 @@
 #include "lexer.h"
 
 #include <stdio.h>
+#include <sys/stat.h>
 
 int yyparse(SExpression **expression, yyscan_t scanner);
 
@@ -39,15 +40,23 @@ int evaluate(SExpression *e) {
     }
 }
 
+void writeExe(int result) {
+    const char* name = "a.out";
+    FILE *fout;
+    fout = fopen(name, "w");
+    chmod(name, S_IRWXU);
+    fprintf(fout, "#! /usr/bin/env bash\n");
+    fprintf(fout, "echo %d\n", result);
+    fclose(fout);
+}
+
 int main(void) {
     SExpression *e = NULL;
     int result = 0;
 
     e = getAST();
-
     result = evaluate(e);
-
-    printf("Result is %d\n", result);
+    writeExe(result);
 
     deleteExpression(e);
 
